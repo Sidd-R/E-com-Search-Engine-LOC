@@ -53,10 +53,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         .then(response => response.json())
                         .then(data => {
                             var flipkart_price = data.flipkart_price;
+                            var offers = data.bank_offers;
 
                             // Display Flipkart price
                             showComponent('flipkartPrice');
-                            document.getElementById('flipkart-offers').innerText = "Flipkart: " + flipkart_price;
+                            showComponent('flipkartOffers');
+                            document.getElementById('flipkart-price').innerText = flipkart_price;
                         })
                         .catch(error => {
                             console.error('Error fetching Flipkart price:', error);

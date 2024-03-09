@@ -7,9 +7,9 @@
     <!-- Include Tailwind CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 p-8 font-sans">
+<body class="bg-blue-300 p-8 font-sans rounded-sm">
     <h1 class="text-3xl text-gray-800 mb-4">Amazon Comparer</h1>
-    <button id="getTitle" class="bg-orange-500 text-white py-2 px-4 rounded-md text-lg mb-4 hover:bg-orange-600 transition">Compare</button>
+    <button id="getTitle" class="bg-gray-700 text-white py-2 px-4 rounded-md text-lg mb-4 hover:bg-gray-900 transition">Compare</button>
     
     <div id="productDetails" class="w-96 mb-8 bg-white p-4 rounded-md shadow-md hover:shadow-lg transition hidden">
         <div id="extension-title" class="text-2xl text-gray-800 mb-2 font-bold">Product Name</div>
@@ -17,14 +17,23 @@
     </div>
 
     <div id="bankOffers" class="w-96 mb-8 bg-white p-4 rounded-md shadow-md hover:shadow-lg transition hidden">
-        <div class="text-lg text-gray-800 font-bold mb-2">Bank Offers</div>
+        <div class="text-lg text-gray-800 font-bold mb-2">Amazon Offers</div>
         <div id="bank-offers" class="text-lg text-gray-800 mb-4"></div>
         <div id="cashback" class="text-lg text-gray-800 mb-4"></div>
     </div>
     
     <div id="flipkartPrice" class="w-96 mb-8 bg-white p-4 rounded-md shadow-md hover:shadow-lg transition hidden">
         <div class="text-2xl text-gray-800 font-bold mb-2">Flipkart Price</div>
-        <div id="flipkart-offers" class="text-lg text-gray-800 mb-4"></div>
+        <div id="flipkart-price" class="text-lg text-gray-800 mb-4"></div>
+    </div>
+    <div id="flipkartOffers" class="w-96 mb-8 bg-white p-4 rounded-md shadow-md hover:shadow-lg transition hidden">
+        <div class="text-lg text-gray-800 font-bold mb-2">Flipkart Offers</div>
+        <div id="flipkart-offers" class="text-lg text-gray-800 mb-4">
+            <ul>
+                <li>Bank OfferGet ₹25* instant discount for the 1st Flipkart Order using Flipkart UPI</li>
+                <l1>Bank Offer5% Cashback on Flipkart Axis Bank Card</l1>
+            </ul>
+        </div>
     </div>
     <script src="popup.js"></script>
 </body>
