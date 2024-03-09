@@ -1,0 +1,19 @@
+
+{
+    "manifest_version": 3,
+    "name": "Amazon Comparer",
+    "version": "1.0",
+    "description": "This is an Summarizer extension that summarizes the content of the page and displays it in a popup.",
+    "permissions": [
+      "activeTab",
+      "scripting"
+    ],
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "defaul_icon.png",
+        "48": "defaul_icon.png",
+        "128": "defaul_icon.png"
+      }
+    }
+  }
