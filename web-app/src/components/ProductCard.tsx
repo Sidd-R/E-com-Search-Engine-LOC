@@ -34,6 +34,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </CardItem>
         <CardItem translateZ="100" className="w-full mt-4">
           <Image
+              alt={'image of '+product.name}
             src={product.image}
             height="1000"
             width="1000"
@@ -51,6 +52,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </CardItem>
           <CardItem translateZ={20} as="button" data-link={product.url}>
             <Image
+            alt={product.platform==='flipkart' ? 'flipkart logo' : 'amazon logo'}
               src={
                 product.platform === "flipkart"
                   ? "/flipkart-icon.svg"
