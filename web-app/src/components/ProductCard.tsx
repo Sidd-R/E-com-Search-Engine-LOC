@@ -2,16 +2,16 @@ import React from "react";
 import Image from "next/image";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 import { StarIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
+import {useRouter} from "next/navigation";
 
 export type Product = {
   name: string;
   image: string;
   rating: string;
-  about: string;
-  price: string;
-  platform: string;
-  url: string | null;
+  about: string | null;
+  price: string | null;
+  platform: string | null;
+  url: string;
 };
 
 interface ProductCardProps {
@@ -23,6 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   key: key,
   product: product,
 }) => {
+  const router = useRouter();
   return (
     <CardContainer key={key}>
       <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] h-auto rounded-xl p-6 border">
@@ -34,7 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </CardItem>
         <CardItem translateZ="100" className="w-full mt-4">
           <Image
-              alt={'image of '+product.name}
+            alt={"image of " + product.name}
             src={product.image}
             height="1000"
             width="1000"
@@ -52,7 +53,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </CardItem>
           <CardItem translateZ={20} as="button" data-link={product.url}>
             <Image
-            alt={product.platform==='flipkart' ? 'flipkart logo' : 'amazon logo'}
+              alt={
+                product.platform === "flipkart"
+                  ? "flipkart logo"
+                  : "amazon logo"
+              }
               src={
                 product.platform === "flipkart"
                   ? "/flipkart-icon.svg"
@@ -70,23 +75,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
             as="button"
             className="px-4 py-2 rounded-xl text-md font-normal dark:text-white"
           >
-            {product.price}
+            ₹ {product.price}
           </CardItem>
           <CardItem
             translateZ={20}
             as="button"
             className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
+            onClick={() => {
+              localStorage.setItem("productUrl", product.url);
+              router.push(`/product/${product.url?.split("/")[3]}`);
+            }}
           >
-            <Link
-              href={{
-                pathname: `/product/${product.url?.split("/")[3]}`,
-                query: {
-                  productUrl: product.url,
-                },
-              }}
-            >
-              Show More
-            </Link>
+            Show More
           </CardItem>
         </div>
       </CardBody>
