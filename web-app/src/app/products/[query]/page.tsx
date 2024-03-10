@@ -80,7 +80,7 @@ export default function Example() {
       .then((res) => {
         setProducts(res.data);
         setLoading(false);
-        res.data.forEach((product:any) => {
+        res.data.forEach((product: any) => {
           console.log(product);
         });
       })
@@ -112,19 +112,19 @@ export default function Example() {
     setSortedProducts(sortedProducts); // Update the state here
   }, [selectedFilter, products]); // Include products dependency
 
-
   useEffect(() => {
-      if (products.length > 0) {
-        TextToSpeech('Press spacebar to listen to the product details, Press enter to go that product page');
-
-      }
+    if (products.length > 0) {
+      TextToSpeech(
+        "Press spacebar to listen to the product details, Press enter to go that product page"
+      );
+    }
   }, [products]);
 
-  const [currentProdIndex, setCurrentProdIndex] = useState(0)
+  const [currentProdIndex, setCurrentProdIndex] = useState(0);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === ' ' && currentProdIndex < 5) {
+      if (e.key === " " && currentProdIndex < 5) {
         TextToSpeech(`The product name is products[currentProdIndex].name
         The product price is products[currentProdIndex].price
         The rating of the product is products[currentProdIndex].rating
@@ -135,11 +135,11 @@ export default function Example() {
       // else if (e.key === 'Enter') {
       //   window.location.href = products[currentProdIndex].url;
       // }
-    }
-    window.addEventListener('keydown', handleKeyDown);
+    };
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    }
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
   return (
@@ -225,6 +225,15 @@ export default function Example() {
                                     defaultValue={option.value}
                                     type="checkbox"
                                     className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+                                    onChange={() => {
+                                      // Toggle the selected filter state
+                                      setSelectedFilter((prevFilter) =>
+                                        prevFilter === option.value
+                                          ? null
+                                          : option.value
+                                      );
+                                    }}
+                                    checked={option.value === selectedFilter}
                                   />
                                   <label
                                     htmlFor={`${section.id}-${optionIdx}-mobile`}
@@ -252,14 +261,6 @@ export default function Example() {
             loading={loading}
             duration={2000}
           />
-          {loading && (
-            <button
-              className="fixed top-4 right-4 text-black dark:text-white z-[120]"
-              onClick={() => setLoading(false)}
-            >
-              <IconSquareRoundedX className="h-10 w-10" />
-            </button>
-          )}
           <div className="border-b border-gray-200 pt-10 pb-10">
             <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
               Related Products
