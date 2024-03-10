@@ -6,6 +6,8 @@ import { TypewriterEffectSmooth } from "../components/ui/typewriter-effect";
 import { ContainerScroll } from "../components/ui/container-scroll-animation";
 import { motion } from "framer-motion";
 import { MagnifyingGlassIcon, MicrophoneIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const words = [
   {
@@ -143,12 +145,9 @@ const users = [
 ];
 
 const BackgroundBoxesDemo = () => {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = React.useState("");
   const [recording, setRecording] = React.useState(false);
-
-  const handleSearch = () => {
-    console.log(searchQuery);
-  };
 
   const handleVoiceInputStart = () => {
     console.log("Voice input started");
@@ -160,29 +159,29 @@ const BackgroundBoxesDemo = () => {
     setRecording(false);
   };
 
-  useEffect(() => {
-    if (recording) {
-      // Start the speech synthesis
-      startSpeechSynthesis();
-    }
-  }, [recording]);
+  // useEffect(() => {
+  //   if (recording) {
+  //     // Start the speech synthesis
+  //     startSpeechSynthesis();
+  //   }
+  // }, [recording]);
 
-  const startSpeechSynthesis = () => {
-    const utterance = new SpeechSynthesisUtterance(
-      "Please speak clearly and slowly"
-    );
-    utterance.volume = 1;
-    utterance.rate = 1;
-    utterance.pitch = 1;
+  // const startSpeechSynthesis = () => {
+  //   const utterance = new SpeechSynthesisUtterance(
+  //     "Please speak clearly and slowly"
+  //   );
+  //   utterance.volume = 1;
+  //   utterance.rate = 1;
+  //   utterance.pitch = 1;
 
-    // Update query as speech is being read
-    utterance.onend = () => {
-      setSearchQuery((prevQuery) => prevQuery + " "); // Add a space to separate words
-      startSpeechSynthesis(); // Continue to the next utterance
-    };
+  //   // Update query as speech is being read
+  //   utterance.onend = () => {
+  //     setSearchQuery((prevQuery) => prevQuery + " "); // Add a space to separate words
+  //     startSpeechSynthesis(); // Continue to the next utterance
+  //   };
 
-    window.speechSynthesis.speak(utterance);
-  };
+  //   window.speechSynthesis.speak(utterance);
+  // };
 
   return (
     <div className="py-15 sm:py-20 px-5 relative min-h-[100vh] w-full overflow-hidden bg-white flex flex-col items-center">
@@ -232,9 +231,9 @@ const BackgroundBoxesDemo = () => {
           >
             <MicrophoneIcon className="block h-6 w-6" aria-hidden="true" />
           </button>
-          <button onClick={handleSearch}>
+          <a href={`/products/${searchQuery}`}>
             <MagnifyingGlassIcon className="block h-6 w-6" aria-hidden="true" />
-          </button>
+          </a>
         </div>
       </motion.div>
       <ContainerScroll
