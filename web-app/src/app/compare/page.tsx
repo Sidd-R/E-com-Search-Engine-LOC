@@ -1,5 +1,6 @@
 // pages/compare.js
 "use client";
+import axios from "axios";
 import React, { useState } from "react";
 
 const Compare = () => {
@@ -27,7 +28,7 @@ const Compare = () => {
       // Example:
       // fetchProduct(url1).then(data => setProduct1(data));
       // fetchProduct(url2).then(data => setProduct2(data));
-
+      // axios.get(process.env.NEXT_PUBLIC_API_URL+'/product_amazon?url='+url1).then((res) => {
       setLoading(false);
     }, 1500);
   };

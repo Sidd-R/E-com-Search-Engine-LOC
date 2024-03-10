@@ -5,8 +5,11 @@ from flask_cors import CORS
 from scrape import get_product_data_flipkart, get_product_data_amazon, get_product_list_amazon, get_product_list_flipkart
 import threading
 from redis import Redis
+from chatbot import query
+
 app = Flask(__name__)
 redis_client = Redis(host='localhost', port=6379, db=0)
+
 
 CORS(app)
 
@@ -78,6 +81,17 @@ def track():
 
 
     return jsonify(result)
+
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    data = request.json
+    question = data['question']
+    details = data['details']
+
+    result = query(question, details)
+
+    return jsonify({'answer':result})
 
 if __name__ == '__main__':
     app.run(debug=True)
