@@ -1,187 +1,256 @@
-"use client";
-import React, { useState, Fragment, useEffect } from "react";
-import { Transition } from "@headlessui/react";
-import { Boxes } from "../components/ui/background-boxes";
-import { TypewriterEffectSmooth } from "../components/ui/typewriter-effect";
-import { ContainerScroll } from "../components/ui/container-scroll-animation";
-import { motion } from "framer-motion";
-import { MagnifyingGlassIcon, MicrophoneIcon } from "@heroicons/react/24/solid";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+'use client';
+import React, { useState, Fragment, useEffect } from 'react';
+import { Transition } from '@headlessui/react';
+import { Boxes } from '../components/ui/background-boxes';
+import { TypewriterEffectSmooth } from '../components/ui/typewriter-effect';
+import { ContainerScroll } from '../components/ui/container-scroll-animation';
+import { motion } from 'framer-motion';
+import { MagnifyingGlassIcon, MicrophoneIcon } from '@heroicons/react/24/solid';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import TextToSpeech from "@/utils/textToSpeech";
 
 const words = [
   {
-    text: "Search",
+    text: 'Search',
   },
   {
-    text: "Products",
+    text: 'Products',
   },
   {
-    text: "of",
+    text: 'of',
   },
   {
-    text: "Your",
+    text: 'Your',
   },
   {
-    text: "Choice",
+    text: 'Choice',
   },
 ];
 
 const users = [
   {
-    name: "Manu Arora",
-    designation: "Founder, Algochurn",
-    image: "https://picsum.photos/id/10/300/300",
-    badge: "Mentor",
+    name: 'Manu Arora',
+    designation: 'Founder, Algochurn',
+    image: 'https://picsum.photos/id/10/300/300',
+    badge: 'Mentor',
   },
   {
-    name: "Sarah Singh",
+    name: 'Sarah Singh',
     designation: "Founder, Sarah's Kitchen",
-    image: "https://picsum.photos/id/11/300/300",
-    badge: "Mentor",
+    image: 'https://picsum.photos/id/11/300/300',
+    badge: 'Mentor',
   },
   {
-    name: "John Doe",
-    designation: "Software Engineer, Tech Corp",
-    image: "https://picsum.photos/id/12/300/300",
-    badge: "Mentor",
+    name: 'John Doe',
+    designation: 'Software Engineer, Tech Corp',
+    image: 'https://picsum.photos/id/12/300/300',
+    badge: 'Mentor',
   },
   {
-    name: "Jane Smith",
-    designation: "Product Manager, Innovate Inc",
-    image: "https://picsum.photos/id/13/300/300",
-    badge: "Mentor",
+    name: 'Jane Smith',
+    designation: 'Product Manager, Innovate Inc',
+    image: 'https://picsum.photos/id/13/300/300',
+    badge: 'Mentor',
   },
   {
-    name: "Robert Johnson",
-    designation: "Data Scientist, DataWorks",
-    image: "https://picsum.photos/id/14/300/300",
-    badge: "Mentor",
+    name: 'Robert Johnson',
+    designation: 'Data Scientist, DataWorks',
+    image: 'https://picsum.photos/id/14/300/300',
+    badge: 'Mentor',
   },
   {
-    name: "Emily Davis",
-    designation: "UX Designer, DesignHub",
-    image: "https://picsum.photos/id/15/300/300",
-    badge: "Mentor",
+    name: 'Emily Davis',
+    designation: 'UX Designer, DesignHub',
+    image: 'https://picsum.photos/id/15/300/300',
+    badge: 'Mentor',
   },
   {
-    name: "Michael Miller",
-    designation: "CTO, FutureTech",
-    image: "https://picsum.photos/id/16/300/300",
-    badge: "Mentor",
+    name: 'Michael Miller',
+    designation: 'CTO, FutureTech',
+    image: 'https://picsum.photos/id/16/300/300',
+    badge: 'Mentor',
   },
   {
-    name: "Sarah Brown",
-    designation: "CEO, StartUp",
-    image: "https://picsum.photos/id/17/300/300",
+    name: 'Sarah Brown',
+    designation: 'CEO, StartUp',
+    image: 'https://picsum.photos/id/17/300/300',
   },
   {
-    name: "James Wilson",
-    designation: "DevOps Engineer, CloudNet",
-    image: "https://picsum.photos/id/18/300/300",
-    badge: "Something",
+    name: 'James Wilson',
+    designation: 'DevOps Engineer, CloudNet',
+    image: 'https://picsum.photos/id/18/300/300',
+    badge: 'Something',
   },
   {
-    name: "Patricia Moore",
-    designation: "Marketing Manager, MarketGrowth",
-    image: "https://picsum.photos/id/19/300/300",
-    badge: "Mentor",
+    name: 'Patricia Moore',
+    designation: 'Marketing Manager, MarketGrowth',
+    image: 'https://picsum.photos/id/19/300/300',
+    badge: 'Mentor',
   },
   {
-    name: "Richard Taylor",
-    designation: "Frontend Developer, WebSolutions",
-    image: "https://picsum.photos/id/20/300/300",
+    name: 'Richard Taylor',
+    designation: 'Frontend Developer, WebSolutions',
+    image: 'https://picsum.photos/id/20/300/300',
   },
   {
-    name: "Linda Anderson",
-    designation: "Backend Developer, ServerSecure",
-    image: "https://picsum.photos/id/21/300/300",
+    name: 'Linda Anderson',
+    designation: 'Backend Developer, ServerSecure',
+    image: 'https://picsum.photos/id/21/300/300',
   },
   {
-    name: "William Thomas",
-    designation: "Full Stack Developer, FullStack",
-    image: "https://picsum.photos/id/22/300/300",
-    badge: "Badger",
+    name: 'William Thomas',
+    designation: 'Full Stack Developer, FullStack',
+    image: 'https://picsum.photos/id/22/300/300',
+    badge: 'Badger',
   },
   {
-    name: "Elizabeth Jackson",
-    designation: "Project Manager, ProManage",
-    image: "https://picsum.photos/id/23/300/300",
-    badge: "Mentor",
+    name: 'Elizabeth Jackson',
+    designation: 'Project Manager, ProManage',
+    image: 'https://picsum.photos/id/23/300/300',
+    badge: 'Mentor',
   },
   {
-    name: "David White",
-    designation: "Database Administrator, DataSafe",
-    image: "https://picsum.photos/id/24/300/300",
-    badge: "Advocate",
+    name: 'David White',
+    designation: 'Database Administrator, DataSafe',
+    image: 'https://picsum.photos/id/24/300/300',
+    badge: 'Advocate',
   },
   {
-    name: "Jennifer Harris",
-    designation: "Network Engineer, NetConnect",
-    image: "https://picsum.photos/id/25/300/300",
+    name: 'Jennifer Harris',
+    designation: 'Network Engineer, NetConnect',
+    image: 'https://picsum.photos/id/25/300/300',
   },
   {
-    name: "Charles Clark",
-    designation: "Security Analyst, SecureIT",
-    image: "https://picsum.photos/id/26/300/300",
+    name: 'Charles Clark',
+    designation: 'Security Analyst, SecureIT',
+    image: 'https://picsum.photos/id/26/300/300',
   },
   {
-    name: "Susan Lewis",
-    designation: "Systems Analyst, SysAnalyse",
-    image: "https://picsum.photos/id/27/300/300",
+    name: 'Susan Lewis',
+    designation: 'Systems Analyst, SysAnalyse',
+    image: 'https://picsum.photos/id/27/300/300',
   },
   {
-    name: "Joseph Young",
-    designation: "Mobile Developer, AppDev",
-    image: "https://picsum.photos/id/28/300/300",
-    badge: "Mentor",
+    name: 'Joseph Young',
+    designation: 'Mobile Developer, AppDev',
+    image: 'https://picsum.photos/id/28/300/300',
+    badge: 'Mentor',
   },
   {
-    name: "Margaret Hall",
-    designation: "Quality Assurance, BugFree",
-    image: "https://picsum.photos/id/29/300/300",
-    badge: "Developer",
+    name: 'Margaret Hall',
+    designation: 'Quality Assurance, BugFree',
+    image: 'https://picsum.photos/id/29/300/300',
+    badge: 'Developer',
   },
 ];
 
 const BackgroundBoxesDemo = () => {
+
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = React.useState("");
+  const [searchQuery, setSearchQuery] = React.useState('');
   const [recording, setRecording] = React.useState(false);
 
   const handleVoiceInputStart = () => {
-    console.log("Voice input started");
+    console.log('Voice input started');
     setRecording(true);
   };
 
   const handleVoiceInputEnd = () => {
-    console.log("Voice input ended");
+    console.log('Voice input ended');
     setRecording(false);
   };
 
-  // useEffect(() => {
-  //   if (recording) {
-  //     // Start the speech synthesis
-  //     startSpeechSynthesis();
-  //   }
-  // }, [recording]);
+  const onAnswerChange = async (text: string) => {
+    // console.log("ans change")
+    // const res = await axios.post('http://localhost:5000/ans', {
+    //     transcript: text,
+    //     question_no: currentQuestion + 1
+    // }).then((res) => res.data);
+    // console.log(res)
+    console.log('text', text)
+    router.push(`/products/${text}`);
 
-  // const startSpeechSynthesis = () => {
-  //   const utterance = new SpeechSynthesisUtterance(
-  //     "Please speak clearly and slowly"
-  //   );
-  //   utterance.volume = 1;
-  //   utterance.rate = 1;
-  //   utterance.pitch = 1;
+    // handleAnswerOption(res.option_index)
+    // setAnswer(text);
+};
 
-  //   // Update query as speech is being read
-  //   utterance.onend = () => {
-  //     setSearchQuery((prevQuery) => prevQuery + " "); // Add a space to separate words
-  //     startSpeechSynthesis(); // Continue to the next utterance
-  //   };
 
-  //   window.speechSynthesis.speak(utterance);
-  // };
+  const [recognizedText, setRecognizedText] = useState('');
+  const [isListening, setIsListening] = useState(false);
+
+  useEffect(() => {
+    let recognition: any = null;
+
+    const startListening = () => {
+      recognition = new window.webkitSpeechRecognition();
+      console.log('started listening');
+      recognition.continuous = true;
+      recognition.lang = 'en-US';
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        setRecognizedText(transcript);
+      };
+      recognition.start();
+    };
+
+    const stopListening = () => {
+      if (recognition) {
+        console.log('stopped listening');
+        recognition.stop();
+        // recognition.abort()
+      }
+    };
+
+    if (isListening) {
+      startListening();
+    } else {
+      stopListening();
+    }
+
+    return () => {
+      stopListening();
+    };
+  }, [isListening]);
+
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.code === 'Space') {
+      console.log('space down');
+      setIsListening(true);
+    } 
+  };
+
+  const handleKeyUp = (event: KeyboardEvent) => {
+    if (event.code === 'Space') {
+      console.log('space up');
+      setIsListening(false);
+    } 
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    // window.addEventListener('keydown', handleKeyDownN);
+    // window.addEventListener('keyup', handleKeyUpN);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isListening && recognizedText.trim() !== '') {
+      onAnswerChange(recognizedText);
+    }
+  }, [recognizedText]);
+
+  useEffect(() => {
+    TextToSpeech('Welcome to The Shopping Platform, Search Products of Your Choice. Press and hold spacebar to say your query');
+  }, []);
 
   return (
     <div className="py-15 sm:py-20 px-5 relative min-h-[100vh] w-full overflow-hidden bg-white flex flex-col items-center">
@@ -231,7 +300,7 @@ const BackgroundBoxesDemo = () => {
           >
             <MicrophoneIcon className="block h-6 w-6" aria-hidden="true" />
           </button>
-          <a href={`/products/${searchQuery}`}>
+          <a href={`/products/${searchQuery}`} className="ml-5">
             <MagnifyingGlassIcon className="block h-6 w-6" aria-hidden="true" />
           </a>
         </div>

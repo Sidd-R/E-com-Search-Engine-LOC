@@ -5,6 +5,8 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import { InfiniteMovingCards } from "@/components/ui/infinite-product-card-slider";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 import MyResponsiveLine from "@/components/PriceGraph";
+import { usePathname, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
 const product = {
   name: "Zip Tote Basket",
@@ -120,9 +122,12 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
-    const [selectedColor, setSelectedColor] = useState(product.colors[0]); 
-
+export default function Example(params: { productUrl: string }) {
+    const pathname = usePathname();
+    //how can i get params passed in pathname
+    const { name } = useParams();
+    //console.log(productUrl);
+    
   return (
     <div className="bg-white">
       {/* Mobile menu */}

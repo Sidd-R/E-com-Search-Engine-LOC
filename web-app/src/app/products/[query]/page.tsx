@@ -8,6 +8,7 @@ import { IconSquareRoundedX } from "@tabler/icons-react";
 import ProductCard from "@/components/ProductCard";
 import axios from "axios";
 import { usePathname } from "next/navigation";
+import TextToSpeech from "@/utils/textToSpeech";
 
 const loadingStates = [
   {
@@ -41,47 +42,18 @@ const filters = [
     id: "price",
     name: "Price",
     options: [
-      { value: "descending", label: "High to Low" },
-      { value: "ascending", label: "Low to High" },
+      { value: "descending-price", label: "High to Low" },
+      { value: "ascending-price", label: "Low to High" },
     ],
   },
   {
     id: "ratings",
     name: "Ratings",
     options: [
-      { value: "descending", label: "High to Low" },
-      { value: "ascending", label: "Low to High" },
+      { value: "descending-ratings", label: "High to Low" },
+      { value: "ascending-ratings", label: "Low to High" },
     ],
   },
-];
-
-const products = [
-  {
-    id: 1,
-    name: "Basic Tee 8-Pack",
-    href: "#",
-    price: "$256",
-    description:
-      "Get the full lineup of our Basic Tees. Have a fresh shirt all week, and an extra for laundry day.",
-    options: "8 colors",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-01.jpg",
-    imageAlt:
-      "Eight shirts arranged on table in black, olive, grey, blue, white, red, mustard, and green.",
-  },
-  {
-    id: 2,
-    name: "Basic Tee",
-    href: "#",
-    price: "$32",
-    description:
-      "Look like a visionary CEO and wear the same black t-shirt every day.",
-    options: "Black",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-02.jpg",
-    imageAlt: "Front of plain black t-shirt.",
-  },
-  // More products...
 ];
 
 function classNames(...classes: string[]) {
@@ -92,6 +64,8 @@ export default function Example() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
+  const [sortedProducts, setSortedProducts] = useState([products]);
+  const [selectedFilter, setSelectedFilter] = useState(null);
   const axiosHeaders = {
     "ngrok-skip-browser-warning": "1231",
   };
@@ -106,11 +80,68 @@ export default function Example() {
       .then((res) => {
         setProducts(res.data);
         setLoading(false);
+        res.data.forEach((product:any) => {
+          console.log(product);
+        });
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+  useEffect(() => {
+    const sortedProducts = [...products];
+    if (selectedFilter) {
+      sortedProducts.sort((a, b) => {
+        // Adjust the sorting logic based on the selected filter
+        if (selectedFilter === "descending-ratings") {
+          // Sort in descending order
+          return parseFloat(b.rating) - parseFloat(a.rating);
+        } else if (selectedFilter === "ascending-ratings") {
+          // Sort in ascending order
+          return parseFloat(a.rating) - parseFloat(b.rating);
+        } else if (selectedFilter === "descending-price") {
+          // Sort in descending order
+          return parseFloat(b.price) - parseFloat(a.price);
+        } else if (selectedFilter === "ascending-price") {
+          // Sort in ascending order
+          return parseFloat(a.price) - parseFloat(b.price);
+        }
+      });
+    }
+    setSortedProducts(sortedProducts); // Update the state here
+  }, [selectedFilter, products]); // Include products dependency
+
+
+  useEffect(() => {
+      if (products.length > 0) {
+        TextToSpeech('Press spacebar to listen to the product details, Press enter to go that product page');
+
+      }
+  }, [products]);
+
+  const [currentProdIndex, setCurrentProdIndex] = useState(0)
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === ' ' && currentProdIndex < 5) {
+        TextToSpeech(`The product name is products[currentProdIndex].name
+        The product price is products[currentProdIndex].price
+        The rating of the product is products[currentProdIndex].rating
+        The product is available on products[currentProdIndex].platform
+        `);
+        setCurrentProdIndex(currentProdIndex + 1);
+      }
+      // else if (e.key === 'Enter') {
+      //   window.location.href = products[currentProdIndex].url;
+      // }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, []);
+
   return (
     <div className="bg-white">
       <div>
@@ -279,6 +310,8 @@ export default function Example() {
                                 defaultValue={option.value}
                                 type="checkbox"
                                 className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+                                onChange={() => setSelectedFilter(option.value)}
+                                checked={option.value === selectedFilter} // Check if the option is selected
                               />
                               <label
                                 htmlFor={`${section.id}-${optionIdx}`}
@@ -305,7 +338,7 @@ export default function Example() {
               </h2>
 
               <div className="flex flex-wrap gap-5 w-[100%]">
-                {products.map((product, index) => (
+                {sortedProducts.map((product, index) => (
                   <ProductCard key={index} product={product} />
                 ))}
               </div>
