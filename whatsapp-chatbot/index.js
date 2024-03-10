@@ -6,9 +6,6 @@ const {
   Buttons,
 } = require("whatsapp-web.js");
 const qrcode = require("qrcode-terminal");
-const axios = require("axios");
-const cheerio = require("cheerio");
-const puppeteer = require("puppeteer");
 const { Builder, By, Key, until } = require("selenium-webdriver");
 
 const spawner = require("child_process").spawn;
@@ -68,7 +65,7 @@ client.on("message", async (message) => {
       .then((productLink) => {
         console.log("Product Link:", productLink);
         const price = spawner("python", ["search.py", productLink]);
-        price.stdout.on("data", (data) => {
+        price.stdout.on("data", async (data) => {
           console.log(data.toString());
           data = JSON.parse(data);
           console.log(data.product);
@@ -78,14 +75,32 @@ client.on("message", async (message) => {
           }\nAverage Price: ${data.average}\n\nPrices:\n${data.prices
             .map((item) => `- ${item.site}: ${item.price}\n  ${item.link}`)
             .join("\n")}`;
-
+          
           console.log(reply);
+          console.log(data.image);
+          const media = await MessageMedia.fromUrl(data.image);
           // client.sendMessage(message.from, message);
           // console.log("Price:", data.toString());
-            message.reply(reply);
+          client.sendMessage(message.from, media, { caption: reply });
+          // message.reply(reply);
         });
       })
       .catch((error) => console.error("An error occurred:", error));
+  }
+
+  if(message.body.startsWith("!recommend")) {
+    console.log('test');
+    const search = message.body.split(" ").slice(1).join(" ");
+    const result = spawner("python", ["recommend.py", search]);
+    result.stdout.on("data", async (data) => {
+      console.log(data.toString());
+      // data = data.toString();
+      data = JSON.parse(data);
+      // console.log(data.image);
+      const media = await MessageMedia.fromUrl(data.image);
+      client.sendMessage(message.from, media, { caption: data.title });
+      client.sendMessage(message.from, "Name: " + data.name + "\nPrice: " + data.price);
+    });
   }
 });
 
