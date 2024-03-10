@@ -82,7 +82,7 @@ def get_product_list_amazon(term,url_list = [],driver = None):
 
             x =  item.find_element(By.CSS_SELECTOR,'[data-cy="title-recipe"]')
             data['url'] = item.find_element(By.CSS_SELECTOR,'[data-component-type="s-product-image"]').find_element(By.TAG_NAME,'a').get_attribute('href')
-            data['title'] = x.find_element(By.TAG_NAME,'span').text
+            data['name'] = x.find_element(By.TAG_NAME,'span').text
             data['image'] = item.find_element(By.TAG_NAME,'img').get_attribute('src')
             # print([ u. for u in item.find_elements(By.CLASS_NAME,'a-icon-alt')])
             # print(item.find_element(By.XPATH,f"//span[contains(text(), 'out of 5')]").text)
@@ -95,7 +95,7 @@ def get_product_list_amazon(term,url_list = [],driver = None):
             print(e)
             print("Error in get_product_list_amazon")
             pass
-        break
+        # break
     return url_list
 
 def get_product_data_amazon(url):
@@ -255,11 +255,14 @@ def get_product_list_flipkart(term,url_list = [],driver = None):
             'platform': 'flipkart'
         })
 
+
     driver.quit()
 
     return url_list
 
-def get_product_data_flipkart(url,driver):
+def get_product_data_flipkart(url,driver=None):
+    if driver is None:
+        driver = webdriver.Chrome(options)
     driver.get(url)
 
     data = {
@@ -275,11 +278,33 @@ def get_product_data_flipkart(url,driver):
         data['image'] = driver.find_element(By.CLASS_NAME,'_3kidJX').find_element(By.TAG_NAME,'img').get_attribute('src')
         # attributes = [x for x in driver.find_elements(By.CLASS_NAME,'_2-ri
         # g')]
+        recs = []
+
+        rec_title = [x.text for x in driver.find_elements(By.CLASS_NAME, 's1Q9rs')]
+        rec_url = [x.get_attribute('href') for x in driver.find_elements(By.CLASS_NAME, 's1Q9rs')]
+        rec_image = [x.get_attribute('src') for x in driver.find_elements(By.CLASS_NAME, '_396cs4')]
+        rec_rating = [x.text for x in driver.find_elements(By.CLASS_NAME, '_3LWZlK')]
+        data['recommendations'] = recs
+
+        for i in range(len(rec_title)):
+                    recs.append({
+                        'name': rec_title[i],
+                        'url': rec_url[i],
+                        'image': rec_image[i],
+                        'rating': rec_rating[i]
+                    })
+
     except Exception as e:
+
         print(e)
         print("Error in get_product_data_flipkart")
+
+    driver.quit()
     return data
-# driver = webdriver.Chrome(options)
-# print(get_product_data_flipkart('https://www.flipkart.com/motorola-g34-5g-ice-blue-128-gb/p/itmc36bacc1f7bb0?pid=MOBGUFK4P2H9CY7Y&lid=LSTMOBGUFK4P2H9CY7Y4FYWMH&marketplace=FLIPKART&q=smartphones&store=tyy%2F4io&srno=s_1_5&otracker=search&otracker1=search&fm=organic&iid=5ab3a352-2722-4e34-803b-72bdcb8e9179.MOBGUFK4P2H9CY7Y.SEARCH&ppt=hp&ppn=homepage&ssid=hsdrj35a740000001710013348200&qH=6ea4465d0add4685',driver))
-# print(get_product_list_amazon('smartphones'))
-# driver.quit()
+
+if __name__ == '__main__':
+    pass
+    # driver = webdriver.Chrome(options)
+    # print(get_product_data_flipkart('https://www.flipkart.com/motorola-g34-5g-ice-blue-128-gb/p/itmc36bacc1f7bb0?pid=MOBGUFK4P2H9CY7Y&lid=LSTMOBGUFK4P2H9CY7Y4FYWMH&marketplace=FLIPKART&q=smartphones&store=tyy%2F4io&srno=s_1_5&otracker=search&otracker1=search&fm=organic&iid=5ab3a352-2722-4e34-803b-72bdcb8e9179.MOBGUFK4P2H9CY7Y.SEARCH&ppt=hp&ppn=homepage&ssid=hsdrj35a740000001710013348200&qH=6ea4465d0add4685'))
+    # print(get_product_list_amazon('smartphones'))
+    # driver.quit()
