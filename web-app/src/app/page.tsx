@@ -1,163 +1,168 @@
-'use client';
-import React, { useState, Fragment, useEffect } from 'react';
-import { Transition } from '@headlessui/react';
-import { Boxes } from '../components/ui/background-boxes';
-import { TypewriterEffectSmooth } from '../components/ui/typewriter-effect';
-import { ContainerScroll } from '../components/ui/container-scroll-animation';
-import { motion } from 'framer-motion';
-import { MagnifyingGlassIcon, MicrophoneIcon } from '@heroicons/react/24/solid';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+"use client";
+import React, { useState, Fragment, useEffect } from "react";
+import { Transition } from "@headlessui/react";
+import { Boxes } from "../components/ui/background-boxes";
+import { TypewriterEffectSmooth } from "../components/ui/typewriter-effect";
+import { ContainerScroll } from "../components/ui/container-scroll-animation";
+import { motion } from "framer-motion";
+import { MagnifyingGlassIcon, MicrophoneIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import TextToSpeech from "@/utils/textToSpeech";
 
 const words = [
   {
-    text: 'Search',
+    text: "Search",
   },
   {
-    text: 'Products',
+    text: "Products",
   },
   {
-    text: 'of',
+    text: "of",
   },
   {
-    text: 'Your',
+    text: "Your",
   },
   {
-    text: 'Choice',
+    text: "Choice",
   },
 ];
 
 const users = [
   {
-    name: 'Manu Arora',
-    designation: 'Founder, Algochurn',
-    image: 'https://picsum.photos/id/10/300/300',
-    badge: 'Mentor',
+    name: "TECNO POP 8 (Gravity Black,(8GB*+64GB)| 90Hz Punch Hole Display with Dynamic Port & Dual Speakers with DTS| 5000mAh Battery |10W Type-C| Side Fingerprint Sensor| Octa-Core Processor",
+    designation: "6599",
+    image: "https://m.media-amazon.com/images/I/61wbxpNaD1L._SX569_.jpg",
+    badge: 3,
   },
   {
-    name: 'Sarah Singh',
-    designation: "Founder, Sarah's Kitchen",
-    image: 'https://picsum.photos/id/11/300/300',
-    badge: 'Mentor',
+    name: "Redmi 13C 5G (Starlight Black, 6GB RAM, 128GB Storage) | MediaTek Dimensity 6100+ 5G | 90Hz Display",
+    designation: "12499",
+    image: "https://m.media-amazon.com/images/I/81L6069AwHL._SX569_.jpg",
+    badge: 3,
   },
   {
-    name: 'John Doe',
-    designation: 'Software Engineer, Tech Corp',
-    image: 'https://picsum.photos/id/12/300/300',
-    badge: 'Mentor',
+    name: "Redmi Note 13 5G (Stealth Black, 12GB RAM, 256GB Storage) | MTK Dimensity 6080 5G | 7.6mm, Slimmest Note Ever",
+    designation: "21999",
+    image: "https://m.media-amazon.com/images/I/71NnrsYP63L._SX569_.jpg",
+    badge: 4,
   },
   {
-    name: 'Jane Smith',
-    designation: 'Product Manager, Innovate Inc',
-    image: 'https://picsum.photos/id/13/300/300',
-    badge: 'Mentor',
+    name: "Oneplus Nord CE 3 5G (Grey Shimmer, 8GB RAM, 128GB Storage)",
+    designation: "24999",
+    image: "https://m.media-amazon.com/images/I/61abLrCfF7L._SX569_.jpg",
+    badge: 5,
   },
   {
-    name: 'Robert Johnson',
-    designation: 'Data Scientist, DataWorks',
-    image: 'https://picsum.photos/id/14/300/300',
-    badge: 'Mentor',
+    name: "iQOO Z6 Lite 5G (Mystic Night, 6GB RAM, 128GB Storage) with Charger | Qualcomm Snapdragon 4 Gen 1 Processor | 120Hz FHD+ Display | Travel Adaptor Included in The Box",
+    designation: "11999",
+    image: "https://m.media-amazon.com/images/I/61M0tGMbBPL._SX466_.jpg",
+    badge: 4,
   },
   {
-    name: 'Emily Davis',
-    designation: 'UX Designer, DesignHub',
-    image: 'https://picsum.photos/id/15/300/300',
-    badge: 'Mentor',
+    name: "Samsung Galaxy M04 Light Green, 4GB RAM, 128GB Storage | Upto 8GB RAM with RAM Plus | MediaTek Helio P35 Octa-core Processor | 5000 mAh Battery | 13MP Dual Camera",
+    designation: "6999",
+    image: "https://m.media-amazon.com/images/I/813sVzTfvaL._SX466_.jpg",
+    badge: 3,
   },
   {
-    name: 'Michael Miller',
-    designation: 'CTO, FutureTech',
-    image: 'https://picsum.photos/id/16/300/300',
-    badge: 'Mentor',
+    name: "Redmi 13C 5G (Startrail Silver, 4GB RAM, 128GB Storage) | MediaTek Dimensity 6100+ 5G | 90Hz Display",
+    designation: "10999",
+    image: "https://m.media-amazon.com/images/I/813ZN8Pj-HL._SX569_.jpg",
+    badge: 3,
   },
   {
-    name: 'Sarah Brown',
-    designation: 'CEO, StartUp',
-    image: 'https://picsum.photos/id/17/300/300',
+    name: "TECNO POP 8 (Gravity Black,(8GB*+64GB)| 90Hz Punch Hole Display with Dynamic Port & Dual Speakers with DTS| 5000mAh Battery |10W Type-C| Side Fingerprint Sensor| Octa-Core Processor",
+    designation: "6599",
+    image: "https://m.media-amazon.com/images/I/61wbxpNaD1L._SX569_.jpg",
+    badge: 5,
   },
   {
-    name: 'James Wilson',
-    designation: 'DevOps Engineer, CloudNet',
-    image: 'https://picsum.photos/id/18/300/300',
-    badge: 'Something',
+    name: "realme narzo 60 5G (Cosmic Black,8GB+128GB) | 90Hz Super AMOLED Display | Ultra Sharp 64 MP Camera | with 33W SUPERVOOC Charger",
+    designation: "17999",
+    image: "https://m.media-amazon.com/images/I/71r5svsNKyL._SX569_.jpg",
+    badge: 4,
   },
   {
-    name: 'Patricia Moore',
-    designation: 'Marketing Manager, MarketGrowth',
-    image: 'https://picsum.photos/id/19/300/300',
-    badge: 'Mentor',
+    name: "realme narzo 60X 5G（Nebula Purple 6GB,128GB Storage ） Up to 2TB External Memory | 50 MP AI Primary Camera | Segments only 33W Supervooc Charge",
+    designation: "14499",
+    image: "https://m.media-amazon.com/images/I/818UhQ1kpdL._SX569_.jpg",
+    badge: 5,
   },
   {
-    name: 'Richard Taylor',
-    designation: 'Frontend Developer, WebSolutions',
-    image: 'https://picsum.photos/id/20/300/300',
+    name: "Samsung Galaxy M34 5G (Waterfall Blue,8GB,128GB)|120Hz sAMOLED Display|50MP Triple No Shake Cam|6000 mAh Battery|4 Gen OS Upgrade & 5 Year Security Update|16GB RAM with RAM+|Android 13|Without Charger",
+    designation: "17999",
+    image: "https://m.media-amazon.com/images/I/91L9EF-OEGL._SX569_.jpg",
+    badge: 3,
   },
   {
-    name: 'Linda Anderson',
-    designation: 'Backend Developer, ServerSecure',
-    image: 'https://picsum.photos/id/21/300/300',
+    name: "Samsung Galaxy M04 Light Green, 4GB RAM, 64GB Storage | Upto 8GB RAM with RAM Plus | MediaTek Helio P35 Octa-core Processor | 5000 mAh Battery | 13MP Dual Camera",
+    designation: "7899",
+    image: "https://m.media-amazon.com/images/I/813sVzTfvaL._SX466_.jpg",
+    badge: 3,
   },
   {
-    name: 'William Thomas',
-    designation: 'Full Stack Developer, FullStack',
-    image: 'https://picsum.photos/id/22/300/300',
-    badge: 'Badger',
+    name: "Samsung Galaxy M04 Light Green, 4GB RAM, 64GB Storage | Upto 8GB RAM with RAM Plus | MediaTek Helio P35 Octa-core Processor | 5000 mAh Battery | 13MP Dual Camera",
+    designation: "7899",
+    image: "https://m.media-amazon.com/images/I/813sVzTfvaL._SX466_.jpg",
+    badge: 4,
   },
   {
-    name: 'Elizabeth Jackson',
-    designation: 'Project Manager, ProManage',
-    image: 'https://picsum.photos/id/23/300/300',
-    badge: 'Mentor',
+    name: "OnePlus Nord CE 3 Lite 5G (Pastel Lime, 8GB RAM, 256GB Storage)",
+    designation: "19999",
+    image: "https://m.media-amazon.com/images/I/61QRgOgBx0L._SX569_.jpg",
+    badge: 4,
   },
   {
-    name: 'David White',
-    designation: 'Database Administrator, DataSafe',
-    image: 'https://picsum.photos/id/24/300/300',
-    badge: 'Advocate',
+    name: "Samsung Galaxy S20 FE 5G (Cloud Navy, 8GB RAM, 128GB Storage) with No Cost EMI & Additional Exchange Offers",
+    designation: "28980",
+    image: "https://m.media-amazon.com/images/I/81vDZyJQ-4L._SY606_.jpg",
+    badge: 3,
   },
   {
-    name: 'Jennifer Harris',
-    designation: 'Network Engineer, NetConnect',
-    image: 'https://picsum.photos/id/25/300/300',
+    name: "iQOO Z7 Pro 5G (Blue Lagoon, 8GB RAM, 256GB Storage) | 3D Curved AMOLED Display | 4nm MediaTek Dimesity 7200 5G Processor | 64MP Aura Light OIS Camera | Segment's Slimmest & Lightest Smartphone",
+    designation: "24999",
+    image: "https://m.media-amazon.com/images/I/61Id6WJDWqL._SX569_.jpg",
+    badge: 3,
   },
   {
-    name: 'Charles Clark',
-    designation: 'Security Analyst, SecureIT',
-    image: 'https://picsum.photos/id/26/300/300',
+    name: "Samsung Galaxy M34 5G (Midnight Blue,8GB,128GB)|120Hz sAMOLED Display|50MP Triple No Shake Cam|6000 mAh Battery|4 Gen OS Upgrade & 5 Year Security Update|16GB RAM with RAM+|Android 13|Without Charger",
+    designation: "17999",
+    image: "https://m.media-amazon.com/images/I/91fonhAtoAL._SX569_.jpg",
+    badge: 3,
   },
   {
-    name: 'Susan Lewis',
-    designation: 'Systems Analyst, SysAnalyse',
-    image: 'https://picsum.photos/id/27/300/300',
+    name: "OnePlus Nord CE 3 Lite 5G (Pastel Lime, 8GB RAM, 256GB Storage)",
+    designation: "19999",
+    image: "https://m.media-amazon.com/images/I/61QRgOgBx0L._SX569_.jpg",
+    badge: 4,
   },
   {
-    name: 'Joseph Young',
-    designation: 'Mobile Developer, AppDev',
-    image: 'https://picsum.photos/id/28/300/300',
-    badge: 'Mentor',
+    name: "POCO C51 (Power Black, 6GB RAM, 128GB Storage)",
+    designation: "5999",
+    image: "https://m.media-amazon.com/images/I/61NJ8pnt8FL._SX569_.jpg",
+    badge: 5,
   },
   {
-    name: 'Margaret Hall',
-    designation: 'Quality Assurance, BugFree',
-    image: 'https://picsum.photos/id/29/300/300',
-    badge: 'Developer',
+    name: "Samsung Galaxy M14 5G (Smoky Teal,6GB,128GB)|50MP Triple Cam|Segment's Only 6000 mAh 5G SP|5nm Processor|2 Gen. OS Upgrade & 4 Year Security Update|12GB RAM with RAM Plus|Android 13|Without Charger",
+    designation: "13990",
+    image: "https://m.media-amazon.com/images/I/818VqDSKpCL._SX466_.jpg",
+    badge: 4,
   },
 ];
 
 const BackgroundBoxesDemo = () => {
-
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [searchQuery, setSearchQuery] = React.useState("");
   const [recording, setRecording] = React.useState(false);
 
   const handleVoiceInputStart = () => {
-    console.log('Voice input started');
+    console.log("Voice input started");
     setRecording(true);
   };
 
   const handleVoiceInputEnd = () => {
-    console.log('Voice input ended');
+    console.log("Voice input ended");
     setRecording(false);
   };
 
@@ -168,15 +173,14 @@ const BackgroundBoxesDemo = () => {
     //     question_no: currentQuestion + 1
     // }).then((res) => res.data);
     // console.log(res)
-    console.log('text', text)
+    console.log("text", text);
     router.push(`/products/${text}`);
 
     // handleAnswerOption(res.option_index)
     // setAnswer(text);
-};
+  };
 
-
-  const [recognizedText, setRecognizedText] = useState('');
+  const [recognizedText, setRecognizedText] = useState("");
   const [isListening, setIsListening] = useState(false);
 
   useEffect(() => {
@@ -184,9 +188,9 @@ const BackgroundBoxesDemo = () => {
 
     const startListening = () => {
       recognition = new window.webkitSpeechRecognition();
-      console.log('started listening');
+      console.log("started listening");
       recognition.continuous = true;
-      recognition.lang = 'en-US';
+      recognition.lang = "en-US";
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
@@ -197,7 +201,7 @@ const BackgroundBoxesDemo = () => {
 
     const stopListening = () => {
       if (recognition) {
-        console.log('stopped listening');
+        console.log("stopped listening");
         recognition.stop();
         // recognition.abort()
       }
@@ -214,42 +218,43 @@ const BackgroundBoxesDemo = () => {
     };
   }, [isListening]);
 
-
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.code === 'Space') {
-      console.log('space down');
+    if (event.code === "Space") {
+      console.log("space down");
       setIsListening(true);
-    } 
+    }
   };
 
   const handleKeyUp = (event: KeyboardEvent) => {
-    if (event.code === 'Space') {
-      console.log('space up');
+    if (event.code === "Space") {
+      console.log("space up");
       setIsListening(false);
-    } 
+    }
   };
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
 
     // window.addEventListener('keydown', handleKeyDownN);
     // window.addEventListener('keyup', handleKeyUpN);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
     };
   }, []);
 
   useEffect(() => {
-    if (!isListening && recognizedText.trim() !== '') {
+    if (!isListening && recognizedText.trim() !== "") {
       onAnswerChange(recognizedText);
     }
   }, [recognizedText]);
 
   useEffect(() => {
-    TextToSpeech('Welcome to The Shopping Platform, Search Products of Your Choice. Press and hold spacebar to say your query');
+    TextToSpeech(
+      "Welcome to The Shopping Platform, Search Products of Your Choice. Press and hold spacebar to say your query"
+    );
   }, []);
 
   return (

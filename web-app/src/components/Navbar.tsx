@@ -1,10 +1,10 @@
 "use client";
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { BellIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Fragment } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { BellIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function Example() {
@@ -16,7 +16,7 @@ export default function Example() {
             <div className="flex justify-between h-16">
               <div className="flex">
                 <div className="flex-shrink-0 flex items-center">
-                  <img
+                  {/* <img
                     className="block lg:hidden h-8 w-auto"
                     src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
                     alt="Workflow"
@@ -25,7 +25,11 @@ export default function Example() {
                     className="hidden lg:block h-8 w-auto"
                     src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
                     alt="Workflow"
-                  />
+                  /> */}
+                  <h1 className="text-3xl font-semibold text-center text-blue-500">
+                    {/* <img src="/path-to-your-logo.png" alt="IntelliShop Logo" className="h-8 w-auto" /> */}
+                    IntelliShop
+                  </h1>
                 </div>
               </div>
               <div className="-mr-2 flex items-center sm:hidden">
@@ -42,10 +46,9 @@ export default function Example() {
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden">
-          </Disclosure.Panel>
+          <Disclosure.Panel className="sm:hidden"></Disclosure.Panel>
         </>
       )}
     </Disclosure>
-  )
+  );
 }

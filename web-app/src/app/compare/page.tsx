@@ -1,6 +1,7 @@
 // pages/compare.js
 "use client";
 import React, { useState } from "react";
+import axios from "axios";
 
 const Compare = () => {
   const [product1, setProduct1] = useState({
@@ -14,19 +15,19 @@ const Compare = () => {
     image: "https://m.media-amazon.com/images/I/71DSxfKzkJL._SX569_.jpg",
   });
   const [loading, setLoading] = useState(false);
+  const [url1, setUrl1] = useState("");
+  const [url2, setUrl2] = useState("");
 
   const handleCompare = () => {
     setLoading(true);
 
     // Simulating API call delay for demonstration purposes
     setTimeout(() => {
-      // Perform API calls to fetch product information based on input URLs
-      // Update product1 and product2 state with the fetched data
-      // For simplicity, I'll assume you have a function fetchProduct(url) that fetches product data
-
-      // Example:
       // fetchProduct(url1).then(data => setProduct1(data));
       // fetchProduct(url2).then(data => setProduct2(data));
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/amazon_product?url=${url1}`).then((res) => {
+        setProduct1(res.data);
+      })
 
       setLoading(false);
     }, 1500);
@@ -44,11 +45,13 @@ const Compare = () => {
             type="text"
             placeholder="Enter URL for Product 1"
             className="flex-grow p-2 border border-blue-500 rounded-l-md focus:outline-none focus:border-blue-500 transition-all duration-300 w-2/3 mr-2"
+            onChange={(e) => setUrl1(e.target.value)}
           />
           <input
             type="text"
             placeholder="Enter URL for Product 2"
             className="flex-grow p-2 border border-blue-500 rounded-r-md focus:outline-none focus:border-blue-500 transition-all duration-300 w-2/3 ml-2"
+            onChange={(e) => setUrl2(e.target.value)}
           />
           <button
             className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none transition-all duration-300"
