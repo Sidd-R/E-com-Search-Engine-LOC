@@ -8,6 +8,7 @@ import { IconSquareRoundedX } from "@tabler/icons-react";
 import ProductCard from "@/components/ProductCard";
 import axios from "axios";
 import { usePathname } from "next/navigation";
+import TextToSpeech from "@/utils/textToSpeech";
 
 const loadingStates = [
   {
@@ -106,11 +107,46 @@ export default function Example() {
       .then((res) => {
         setProducts(res.data);
         setLoading(false);
+        res.data.forEach((product:any) => {
+          console.log(product);
+        });
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+
+
+  useEffect(() => {
+      if (products.length > 0) {
+        TextToSpeech('Press spacebar to listen to the product details, Press enter to go that product page');
+
+      }
+  }, [products]);
+
+  const [currentProdIndex, setCurrentProdIndex] = useState(0)
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === ' ' && currentProdIndex < 5) {
+        TextToSpeech(`The product name is products[currentProdIndex].name
+        The product price is products[currentProdIndex].price
+        The rating of the product is products[currentProdIndex].rating
+        The product is available on products[currentProdIndex].platform
+        `);
+        setCurrentProdIndex(currentProdIndex + 1);
+      }
+      // else if (e.key === 'Enter') {
+      //   window.location.href = products[currentProdIndex].url;
+      // }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, []);
+
   return (
     <div className="bg-white">
       <div>

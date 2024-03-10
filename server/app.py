@@ -12,7 +12,7 @@ CORS(app)
 
 @app.route('/search', methods=['GET'])
 def search():
-    term = request.args.get('term').replace(' ', '+')
+    term = request.args.get('term').replace(' ', '+').lower().replace('.','')
 
     cached_data = redis_client.get(term)
 

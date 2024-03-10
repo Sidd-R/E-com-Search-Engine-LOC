@@ -30,6 +30,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ key: key, product: product })
         </CardItem>
         <CardItem translateZ="100" className="w-full mt-4">
           <Image
+              alt={'image of '+product.name}
             src={product.image}
             height="1000"
             width="1000"
@@ -49,7 +50,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ key: key, product: product })
             as="button"
             data-link={product.url}
           >
-            <Image src={product.platform==='flipkart' ? '/flipkart-icon.svg' : '/amazon-a-logo-icon.svg'} height={50} width={50} className="h-8 w-8"/>
+            <Image src={product.platform==='flipkart' ? '/flipkart-icon.svg' : '/amazon-a-logo-icon.svg'} alt={product.platform==='flipkart' ? 'flipkart logo' : 'amazon logo'} height={50} width={50} className="h-8 w-8"/>
           </CardItem>
         </div>
         <div className="flex justify-between items-center mt-2">
