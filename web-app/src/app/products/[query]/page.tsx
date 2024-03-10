@@ -7,7 +7,7 @@ import { MultiStepLoader as Loader } from "@/components/ui/multi-step-loader";
 import { IconSquareRoundedX } from "@tabler/icons-react";
 import ProductCard from "@/components/ProductCard";
 import axios from "axios";
-import { headers } from "next/headers";
+import { usePathname } from "next/navigation";
 
 const loadingStates = [
   {
@@ -95,9 +95,12 @@ export default function Example() {
   const axiosHeaders = {
     "ngrok-skip-browser-warning": "1231",
   };
+  const pathname = usePathname();
   useEffect(() => {
+    const query = pathname.split("/")[2];
+    const queryDecoded = decodeURIComponent(query);
     axios
-      .get(`${process.env.NEXT_PUBLIC_API_URL}/search?term=smartphones`, {
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/search?term=${queryDecoded}`, {
         headers: axiosHeaders,
       })
       .then((res) => {
@@ -107,7 +110,7 @@ export default function Example() {
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, []);
   return (
     <div className="bg-white">
       <div>
@@ -295,15 +298,15 @@ export default function Example() {
 
             <section
               aria-labelledby="product-heading"
-              className="mt-6 lg:mt-0 lg:col-span-2 xl:col-span-3"
+              className="mt-6 lg:mt-0 col-span-4"
             >
               <h2 id="product-heading" className="sr-only">
                 Products
               </h2>
 
-              <div className="flex flex-wrap gap-5">
-                {products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+              <div className="flex flex-wrap gap-5 w-[100%]">
+                {products.map((product, index) => (
+                  <ProductCard key={index} product={product} />
                 ))}
               </div>
             </section>
