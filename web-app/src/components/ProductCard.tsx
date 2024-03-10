@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 import { StarIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 type Product = {
   name: string;
@@ -18,7 +19,10 @@ interface ProductCardProps {
   key: number;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ key: key, product: product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  key: key,
+  product: product,
+}) => {
   return (
     <CardContainer key={key}>
       <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] h-auto rounded-xl p-6 border">
@@ -42,14 +46,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ key: key, product: product })
             as="button"
             className="px-4 py-2 rounded-xl text-md font-normal dark:text-white flex items-center"
           >
-            <StarIcon className="h-4 w-4 mr-1"/>{product.rating}
+            <StarIcon className="h-4 w-4 mr-1" />
+            {product.rating}
           </CardItem>
-          <CardItem
-            translateZ={20}
-            as="button"
-            data-link={product.url}
-          >
-            <Image src={product.platform==='flipkart' ? '/flipkart-icon.svg' : '/amazon-a-logo-icon.svg'} height={50} width={50} className="h-8 w-8"/>
+          <CardItem translateZ={20} as="button" data-link={product.url}>
+            <Image
+              src={
+                product.platform === "flipkart"
+                  ? "/flipkart-icon.svg"
+                  : "/amazon-a-logo-icon.svg"
+              }
+              height={50}
+              width={50}
+              className="h-8 w-8"
+            />
           </CardItem>
         </div>
         <div className="flex justify-between items-center mt-2">
@@ -64,9 +74,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ key: key, product: product })
             translateZ={20}
             as="button"
             className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
-            data-link={product.url}
           >
-            Show More
+            <Link
+              href={{
+                pathname: `/product/${product.url?.split("/")[3]}`,
+                query: {
+                  productUrl: product.url,
+                },
+              }}
+            >
+              Show More
+            </Link>
           </CardItem>
         </div>
       </CardBody>
