@@ -66,6 +66,7 @@ export default function Example() {
   const [products, setProducts] = useState<Product[]>([]);
   const [sortedProducts, setSortedProducts] = useState([products]);
   const [selectedFilter, setSelectedFilter] = useState(null);
+
   const axiosHeaders = {
     "ngrok-skip-browser-warning": "1231",
   };
@@ -125,19 +126,6 @@ export default function Example() {
 
   const [currentProdIndex, setCurrentProdIndex] = useState(0);
 
-
-  const readProduct = () => {
-    const index = currentProdIndex;
-    TextToSpeech(`The product name is ${products[index].name}
-    The product price is ${products[index].price}
-    The rating of the product is ${products[index].rating}
-    The product is available on ${products[index].platform}
-    `);
-
-    setCurrentProdIndex(currentProdIndex + 1);
-  }
-
-
   const readProduct = () => {
     const index = currentProdIndex;
     TextToSpeech(`The product name is ${products[index].name}
@@ -151,14 +139,6 @@ export default function Example() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === " " && currentProdIndex < 5) {
-        TextToSpeech(`The product name is products[currentProdIndex].name
-        The product price is products[currentProdIndex].price
-        The rating of the product is products[currentProdIndex].rating
-        The product is available on products[currentProdIndex].platform
-        `);
-        setCurrentProdIndex(currentProdIndex + 1);
-      console.log('key down')
       if (e.code === 'Space') {
         console.log(currentProdIndex)
         e.preventDefault()
