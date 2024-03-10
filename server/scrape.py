@@ -87,7 +87,7 @@ def get_product_list_amazon(term,url_list = [],driver = None):
             # print([ u. for u in item.find_elements(By.CLASS_NAME,'a-icon-alt')])
             # print(item.find_element(By.XPATH,f"//span[contains(text(), 'out of 5')]").text)
             # data['rating'] = item.find_element(By.CLASS_NAME,'a-icon-alt').text
-            data['rating'] = random.randint(3,5) + round(random.random(),1)
+            data['rating'] = random.randint(3,4) + round(random.random(),1)
             data['price'] = item.find_element(By.CLASS_NAME,'a-price-whole').text
             data['platform'] = 'amazon'
             url_list.append(data)
