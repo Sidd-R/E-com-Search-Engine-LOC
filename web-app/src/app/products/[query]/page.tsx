@@ -5,7 +5,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { MultiStepLoader as Loader } from "@/components/ui/multi-step-loader";
 import { IconSquareRoundedX } from "@tabler/icons-react";
-import ProductCard from "@/components/ProductCard";
+import ProductCard, {Product} from "@/components/ProductCard";
 import axios from "axios";
 import { usePathname } from "next/navigation";
 import TextToSpeech from "@/utils/textToSpeech";
@@ -63,7 +63,7 @@ function classNames(...classes: string[]) {
 export default function Example() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [sortedProducts, setSortedProducts] = useState([products]);
   const [selectedFilter, setSelectedFilter] = useState(null);
   const axiosHeaders = {
@@ -73,12 +73,15 @@ export default function Example() {
   useEffect(() => {
     const query = pathname.split("/")[2];
     const queryDecoded = decodeURIComponent(query);
+    TextToSpeech(`The results for your search query is being fetched. Please wait for a moment.`);
     axios
       .get(`${process.env.NEXT_PUBLIC_API_URL}/search?term=${queryDecoded}`, {
         headers: axiosHeaders,
       })
-      .then((res) => {
-        setProducts(res.data);
+      .then((res) =>{
+          window.speechSynthesis.cancel()
+        TextToSpeech(`The results for your search query has been fetched, You can now listen to the products.`);
+        setProducts((e) => res.data);
         setLoading(false);
         res.data.forEach((product:any) => {
           console.log(product);
@@ -122,15 +125,34 @@ export default function Example() {
 
   const [currentProdIndex, setCurrentProdIndex] = useState(0)
 
+
+  const readProduct = () => {
+    const index = currentProdIndex;
+    TextToSpeech(`The product name is ${products[index].name}
+    The product price is ${products[index].price}
+    The rating of the product is ${products[index].rating}
+    The product is available on ${products[index].platform}
+    `);
+
+    setCurrentProdIndex(currentProdIndex + 1);
+  }
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === ' ' && currentProdIndex < 5) {
-        TextToSpeech(`The product name is products[currentProdIndex].name
-        The product price is products[currentProdIndex].price
-        The rating of the product is products[currentProdIndex].rating
-        The product is available on products[currentProdIndex].platform
-        `);
-        setCurrentProdIndex(currentProdIndex + 1);
+      console.log('key down')
+      if (e.code === 'Space') {
+        console.log(currentProdIndex)
+        e.preventDefault()
+        readProduct();
+        // setCurrentProdIndex(currentProdIndex + 1);
+
+        // console.log('space down')
+        // TextToSpeech(`The product name is ${products[currentProdIndex].name}
+        // The product price is ${products[currentProdIndex].price}
+        // The rating of the product is ${products[currentProdIndex].rating}
+        // The product is available on ${products[currentProdIndex].platform}
+        // `);
+        // setCurrentProdIndex(currentProdIndex + 1);
       }
       // else if (e.key === 'Enter') {
       //   window.location.href = products[currentProdIndex].url;
@@ -140,7 +162,7 @@ export default function Example() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     }
-  }, []);
+  }, [products, currentProdIndex]);
 
   return (
     <div className="bg-white">

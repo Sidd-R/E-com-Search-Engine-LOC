@@ -4,7 +4,7 @@ import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 import { StarIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
-type Product = {
+export type Product = {
   name: string;
   image: string;
   rating: string;

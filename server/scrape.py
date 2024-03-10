@@ -118,23 +118,23 @@ def get_product_data_amazon(url):
         data['positive_aspects'] = ''
         data['negative_aspects'] = ''
         data['recommendations'] = []
-        recs = driver.find_elements(By.ID,'btf_arenas')
+        # recs = driver.find_elements(By.ID,'btf_arenas')
         # recs = driver.find_element(By.ID,'sims-fbt').find_elements(By.TAG_NAME,'a')
 
-        recs_name = [g.find_elements(By.CLASS_NAME,'a-size-base') for g in recs]
-        recs_image = [g.find_elements(By.CLASS_NAME,'_product-comparison-desktop_imageWithOverlayStyle_image__1yr4P') for g in recs]
-        recs_price = [g.find_elements(By.CLASS_NAME,'a-price-whole') for g in recs]
-        # recs_url = [g for g in driver.find_elements(By.CLASS_NAME,'a-link-normal')]
-        recs_rating = [g.find_elements(By.CSS_SELECTOR,'[class="a-size-base a-color-base"]') for g in recs]
+        # recs_name = [g.find_elements(By.CLASS_NAME,'a-size-base') for g in recs]
+        # recs_image = [g.find_elements(By.CLASS_NAME,'_product-comparison-desktop_imageWithOverlayStyle_image__1yr4P') for g in recs]
+        # recs_price = [g.find_elements(By.CLASS_NAME,'a-price-whole') for g in recs]
+        # # recs_url = [g for g in driver.find_elements(By.CLASS_NAME,'a-link-normal')]
+        # recs_rating = [g.find_elements(By.CSS_SELECTOR,'[class="a-size-base a-color-base"]') for g in recs]
 
-        for i in range(len(recs_image)):
-            data['recommendations'].append({
-                'name': recs_name[i].text,
-                'image': recs_image[i].get_attribute('src'),
-                'price': recs_price[i],
-                # 'url': recs_url[i].get_attribute('href'),
-                'rating': recs_rating[i].text
-            })
+        # for i in range(len(recs_image)):
+        #     data['recommendations'].append({
+        #         'name': recs_name[i].text,
+        #         'image': recs_image[i].get_attribute('src'),
+        #         'price': recs_price[i],
+        #         # 'url': recs_url[i].get_attribute('href'),
+        #         'rating': recs_rating[i].text
+        #     })
 
 
 
@@ -229,7 +229,7 @@ def get_product_list_flipkart(term,url_list = [],driver = None):
 
     images = [x.get_attribute('src') for x in driver.find_elements(By.CLASS_NAME,'_396cs4')]
 
-    prices = [x.text for x in driver.find_elements(By.CSS_SELECTOR,'[class="_30jeq3 _1_WHN1"]')]
+    prices = [x.text[1:].replace(',','') for x in driver.find_elements(By.CSS_SELECTOR,'[class="_30jeq3 _1_WHN1"]')]
 
     ratings = [x.text for x in driver.find_elements(By.CLASS_NAME,'_3LWZlK')]
 
